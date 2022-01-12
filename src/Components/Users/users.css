@@ -1,0 +1,8 @@
+.users {
+    display: flex;
+    width: 600px;
+    flex-wrap: wrap;
+}
+.user-id, .user-name {
+    margin-right: 25px;
+}
