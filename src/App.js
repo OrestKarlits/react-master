@@ -1,40 +1,43 @@
-
+import React, {useEffect, useState} from 'react';
+import Forms from "./components/Forms/Forms";
 import Users from "./components/Users/Users";
-import UserDetails from "./components/User-Details/User-Details";
-import Posts from "./components/Posts/Posts";
-import css from './App.module.css'
-import {useState} from "react";
-// import {PostService} from "./components/services/post.service";
+import {UserService} from "./components/services/user.service";
 
 const App = () => {
+    const [users, setusers] = useState([]);
+    const [filteredUsers, setfilteredUsers] = useState([]);
 
-    const [user, setUser] = useState(null);
-    const [userId, setUserId] = useState(null);
-    // const [posts, setPosts] = useState([]);
+    useEffect(() => {
+       UserService.getAll().then(value =>
+       {setusers([...value])
+       setfilteredUsers([...value])
+       })
+    }, [])
 
-    const getUser = (user) => {
-      setUser(user)
-        setUserId(null)
+    const getfilter = (data) => {
+      let filterarr = [...users]
+
+        if (data.name){
+            filterarr = filterarr.filter(user => user.name.toLowerCase().includes(data.name.toLowerCase()))
+        }
+
+        if (data.username){
+            filterarr = filterarr.filter(user => user.username.toLowerCase().includes(data.username.toLowerCase()))
+        }
+
+        if (data.email){
+            filterarr = filterarr.filter(user => user.email.toLowerCase().includes(data.email.toLowerCase()))
+        }
+
+        setfilteredUsers(filterarr)
+
     }
-    const getUserId = (id) => {
-      // PostService.getByUserId(id).then(value => setPosts([...value]))
-        setUserId(id)
-    }
-
-  return (
-
-    <div>
-
-        <div className={css.wrap}>
-          <Users getUser = {getUser}/>
-            {user && <UserDetails user = {user} getUserId = {getUserId}/>}
+    return (
+        <div>
+            <Forms getfilter={getfilter}/>
+            <Users users={filteredUsers}/>
         </div>
-
-        {/*{!!posts.length && <Posts posts={posts}/>}*/}
-        {userId && <Posts userId = {userId}/>}
-
-    </div>
-  );
-}
+    );
+};
 
 export default App;

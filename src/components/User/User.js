@@ -2,14 +2,13 @@ import React from 'react';
 
 import css from './User.modulecss.css'
 
-const User = ({users, getUser}) => {
-    const {id, name} = users;
+const User = ({users}) => {
+    const {id, name, username, email} = users;
     return (
         <div>
 
             <div className={'wrap'}>
-                <div> {id}) {name}</div>
-                <button onClick={() => getUser(users)}>Details</button>
+                <div> {id}) {name} -- {username} ----- {email}</div>
             </div>
         </div>
     );
